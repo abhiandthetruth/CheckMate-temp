@@ -23,14 +23,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(!(\Auth::user()->type)){
-           
-            $results=\Auth::user()->results;
-           // $paper=\App\Paper::find();
+        if (!(\Auth::user()->type)) {
+
+            $results = \Auth::user()->results;
+            // $paper=\App\Paper::find();
             // dd($results);
 
-        return view('home',compact('results'));
-        }else{
+            return view('home', compact('results'));
+        } else {
             $papersgiven = \Auth::user()->papersmade;
             return view("home", compact('papersgiven'));
         }

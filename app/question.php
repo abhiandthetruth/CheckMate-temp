@@ -6,15 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class question extends Model
 {
-    protected $guarded = [
-        
-    ];
+    protected $guarded = [];
 
 
     public function keywords()
     {
 
-        return $this->hasmany('\App\keyword','question_id');
-
+        return $this->hasmany('\App\keyword', 'question_id');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Images extends Migration
+class AddNameToResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class Images extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('Sid');
-            $table->integer('paper_id');
-            $table->string('scanned');
-            $table->timestamps();
+        Schema::table('results', function (Blueprint $table) {
+            //
+            $table->string('name');
         });
     }
 
@@ -29,7 +26,8 @@ class Images extends Migration
      */
     public function down()
     {
-
-        Schema::dropIfExists('images');
+        Schema::table('results', function (Blueprint $table) {
+            //
+        });
     }
 }

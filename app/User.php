@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','type','Roll'
+        'name', 'email', 'password', 'type', 'Roll'
     ];
 
     /**
@@ -31,13 +31,11 @@ class User extends Authenticatable
     public function papersmade()
     {
 
-        return $this->hasmany('\App\paper','Tid');
+        return $this->hasmany('\App\paper', 'Tid');
     }
 
     public function results()
     {
-        return $this->hasmany('App\result','Sid');
+        return $this->hasmany('App\result', 'Sid');
     }
-
-
 }
