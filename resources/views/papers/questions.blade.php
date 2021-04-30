@@ -16,6 +16,7 @@
 
           <hr>
           @if($paper->status==0)
+          @if(Auth::user()->type)
           <h5><b> Questions: </b></h5>
           <hr>
 
@@ -134,16 +135,29 @@
 
     </div>
     @else
+    <p>Paper is being constructing....</p>
+    @endif
+    @else
     <div style="padding:10px;">
-      You have added the Questions.
-      View/Edit them here: <a href="{{$paper->id}}/edit/"> Questions</a>
+      Questions have been added. Following is a quick list:
+      {{-- View/Edit them here: <a href="{{$paper->id}}/edit/"> Questions</a> --}}
+      <ul>
+        @foreach ($paper->questions as $question)
+          <li>{{$question->name}}</li>
+        @endforeach
+      </ul>
     </div>
+    <div class="">
+      Submit Answers below(pictures):
+    </div>
+    <br>
     <form method="post" action="{{$paper->id}}/check" enctype="multipart/form-data">
       {{csrf_field()}}
+      @if (Auth::user()->type)
       <div class="form-group">
         <input class="form-control" type="text" name="roll" Placeholder="Enter Roll number">
-
       </div>
+      @endif
       <div class="input-group control-group increment">
         <input type="file" name="filename[]" class="form-control">
         <div class="input-group-btn">

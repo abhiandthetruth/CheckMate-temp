@@ -35,27 +35,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 //view paper
-Route::get('/papers/','PapersController@index');
+Route::get('/papers/', 'PapersController@index');
 
 //Add a paper
-Route::get('/papers/create','PapersController@create');
-Route::post('/papers/create','PapersController@add');
+Route::get('/papers/create', 'PapersController@create');
+Route::post('/papers/create', 'PapersController@add');
 
 //Add a question
-Route::get('/papers/{id}','PapersController@addQuestions');
-Route::post('/papers/{id}','PapersController@submitQuestions');
+Route::get('/papers/{code}', 'PapersController@addQuestions');
+Route::post('/papers/{id}', 'PapersController@submitQuestions');
 
 //Check paper
-Route::post('/papers/{id}/check','CheckController@checkmate');
+Route::post('/papers/{id}/check', 'CheckController@checkmate');
 
-Route::get('/papers/{id}/result','PapersController@viewresult');
-
-
-
-
-
-
-
-
-
-
+Route::get('/papers/{id}/result', 'PapersController@viewresult');

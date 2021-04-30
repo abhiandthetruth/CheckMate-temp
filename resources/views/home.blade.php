@@ -46,7 +46,7 @@
 
               <tr>
                 <th scope="row"><?php echo $i ?></th>
-                <td><a href="papers/{{$paper->id}}">{{$paper->name}}</a></td>
+                <td><a href="papers/{{$paper->code}}">{{$paper->name}}</a></td>
                 <td>{{$paper->created_at->format('d/m/y')}}</td>
                 <td>{{$paper->numQ}}</td>
                 <td>{{$paper->total}}</td>
@@ -67,6 +67,18 @@
 
 
           @else
+          <div class="">
+            <h3>Submit Answers:</h3>
+          </div>
+          <hr>
+              <div class="form-row" style="margin:0px 0px;">
+                <div class="form-group">
+                  <label for="code">Enter Paper Code</label>
+                  <input type="text" name="code" id="code">
+                  <button class="btn btn-primary" onclick="document.location.href = `/papers/${document.getElementById('code').value}`">Go</button>
+                </div>
+              </div>
+            <br>
           <div>
             <h3>Your Results:</h3>
           </div>

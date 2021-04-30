@@ -32,7 +32,7 @@ CREATE TABLE `ambus` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `des` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Tid` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `phone` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `ambus` (
 -- Dumping data for table `ambus`
 --
 
-INSERT INTO `ambus` (`id`, `name`, `des`, `Tid`, `status`, `phone`, `created_at`, `updated_at`, `user_id`) VALUES
+INSERT INTO `ambus` (`id`, `name`, `des`, `user_id`, `status`, `phone`, `created_at`, `updated_at`, `user_id`) VALUES
 (1, 'n', 'kn', 2, 0, 8, '2019-03-28 14:00:23', '2019-03-30 00:06:57', 5),
 (2, 'jn', 'j', 2, 0, 9, '2019-03-28 14:01:06', '2019-03-30 00:05:26', 5),
 (3, 'mkl', 'mk', 3, 0, 2, '2019-03-28 14:19:37', '2019-03-28 14:19:37', NULL),
@@ -84,7 +84,7 @@ CREATE TABLE `p` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `des` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Tid` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `phone` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -130,7 +130,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ty
 (1, 'Manthan Surkar', 'user@gmail.com', NULL, '$2a$10$B8XS8XoJyMd4IEDkqj/6AO.7NIgaG4HjmJZQbiB5kr.RuK0FEIYK6', '0', '88', 'WWAE18pw0KvM1ux81Q3rNKnFwx78l0gYWL1oB2fEKM3SpoMFIBEJMlOeGpgN', '2019-03-28 14:16:25', '2019-03-28 14:16:25'),
 (2, 'Manthan Surkar', 'moderator@gmail.com', NULL, '$2a$10$2l0sbt//4HVkkHHFivX/feW7hUVSnXl1zK.QRPeovspAUAYl.Cyee', '1', '898', 'fHwn93I92GYsz6kIVs4lw1n9CJrF4i9kYZ73yzTfKxsTxd7V2mNqvFlT24Zt', '2019-03-28 14:16:54', '2019-03-28 14:16:54'),
 (3, 'Manthan Surkar', 'ssjlddddddks@jk.com', NULL, '$2y$10$KhBHcXd8PNocZvhIii/NZO92HlXpb2x3w.YV0PVwG1TPn6H/ViOrG', '1', '22', 'wj76HVDsIioXQu3nsSOhE0JCa02q2gYZdplYDRdoWfApS5Xn7fmb3gJV8gbO', '2019-03-28 14:18:23', '2019-03-28 14:18:23'),
-(4, 'Manthan Surkar', 'jlddks@jk.com', NULL, '$2y$10$9V7DkLMj2QoaJazDQfTY7upngd4wteXR4mw9Cj4et.hZ/1xA4RuV6', '1', '9999', 'X6vWgNbN9o1UNoj3jswJL9wkJPdQXSJuT3TA7hQNcgyS1WQYGRTId3zhEsKP', '2019-03-28 14:35:02', '2019-03-28 14:35:02'),
+(4, 'Manthan Surkar', 'jlddks@jk.com', NULL, '$2y$10$9V7DkLMj2QoaJazDQfTY7upngd4wteXR4mw9Cj4et.hZ/1xA4RuV6', '1', '9999', 'X6vWgNbN9o1UNoj3jswJL9wkJPdQXSJuT3TA7hQNcgyS1WQYGRuser_id3zhEsKP', '2019-03-28 14:35:02', '2019-03-28 14:35:02'),
 (5, 'Manthan Surkar', 'mmm@mmm.com', NULL, '$2y$10$Y4W6e29K6E.NTXRNRNT.QeSmGiqtyKwUUUehasXsYnz.zATdzi57G', '0', '222', NULL, '2019-03-28 14:38:32', '2019-03-28 14:38:32');
 
 --

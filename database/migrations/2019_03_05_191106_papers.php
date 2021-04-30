@@ -17,10 +17,11 @@ class Papers extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('des');
-            $table->integer('Tid');
+            $table->integer('user_id');
             $table->integer('status');
             $table->integer('total');
             $table->integer('numQ');
+            $table->string('code');
             $table->timestamps();
         });
     }

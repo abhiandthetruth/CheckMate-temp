@@ -31,7 +31,7 @@ class User extends Authenticatable
     public function papersmade()
     {
 
-        return $this->hasmany('\App\paper', 'Tid');
+        return $this->hasmany('\App\paper', 'user_id');
     }
 
     public function results()

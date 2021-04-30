@@ -26,25 +26,31 @@ class PapersController extends Controller
 
   public function add()
   {
-
-
+    if (\Auth::user()->type < 1) abort(403, 'Unauthorized action.');
+    request()->validate([
+      'code' => ['required', 'unique:papers', 'max:6'],
+      'name' => ['required'],
+      'totalQ' => ['required'],
+      'des' => ['required'],
+      'total' => ['required']
+    ]);
     $paper = new \App\paper;
-
     $paper->name = request('name');
     $paper->des = request('des');
     $paper->numQ = request('totalQ');
     $paper->total = request('total');
     $paper->status = 0;
-    $paper->Tid = \Auth::user()->id;
+    $paper->code = request('code');
+    $paper->user_id = \Auth::user()->id;
     $paper->save();
 
     session()->flash('msg', 'Paper is added successfully.');
     return redirect('/home');
   }
 
-  public function addQuestions($id)
+  public function addQuestions($code)
   {
-    $paper = \App\Paper::find($id);
+    $paper = \App\Paper::where('code', $code)->firstOrFail();
 
     return view("papers/questions", compact('paper'));
   }
@@ -63,11 +69,9 @@ class PapersController extends Controller
   {
 
     $paper = \App\Paper::find($id);
-
-    //dd($paper->numQ);
+    $errors = [];
     for ($i = 1; $i <= $paper->numQ; $i++) {
-      //Adding Questions 
-      //  /dd(request());
+      //Adding Questions
       $question = new \App\question;
       $question->name = request('name' . strval($i));
       $question->paper_id = $id;
