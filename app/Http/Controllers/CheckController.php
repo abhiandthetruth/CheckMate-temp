@@ -11,14 +11,7 @@ use Illuminate\Http\Request;
 
 function spchk($str)
 {
-    //echo $str;
     $k = str_replace(' ', '+', $str);
-    // $response = \Unirest\Request::get("https://montanaflynn-spellcheck.p.rapidapi.com/check/?text=".$k,
-    // array(
-    //   "X-RapidAPI-Key" => "57fab39c6cmsha7d7a9a4a717202p1e4403jsn29e1e96daf4f"
-    // )
-
-    //   );
     return $str;
 }
 function llemm($str)
@@ -203,7 +196,6 @@ function exkey($studl, $key, $m, $i)
             $str = $x->answer;
             $stra = preg_split("/;/", strtolower($str));
             $n = count($stra);
-            //   dd($stra);
             $mar = $x->mark;
             $mara =  preg_split("/;/", strtolower($mar));
             $j = 0;
@@ -280,30 +272,13 @@ class CheckController extends Controller
 
     public function checkmate($id, request $request)
     {
-
-        //$student = \App\user::find(request('roll'));
-        //dd($student);
+        $rollnumber = '';
+        if (\Auth::user()->type) {
+            $rollnumber = request('roll');
+        } else $rollnumber = \Auth::user()->Roll;
         $i = "";
-        // $answers = preg_split("/((q|Q)[0-9]+:)|([0-9]+:)/", $i);
-        // dd($answers);
-        // dd($m);
-        //convert image to base64
-        // $paper = \App\Paper::find($id);
-        //$questions=$paper->questions;     
-        // //dd($m);
-        //   foreach($questions as $question)
-        //   { 
-        //       //$exact=$question->keywords;
-        //       $keywords=$question->keywords;
-
-
-        //     }
-
-
-
         foreach ($request->file('filename') as $file) {
             $image = base64_encode(file_get_contents($file));
-
             //prepare request
             $request = new AnnotateImageRequest();
             $request->setImage($image);
@@ -311,74 +286,45 @@ class CheckController extends Controller
             $gcvRequest = new GoogleCloudVision([$request],  env('GOOGLE_CLOUD_KEY'));
             //send annotation request
             $response = $gcvRequest->annotate();
-            //dd($response);
-
             $j = $response->responses[0]->textAnnotations[0]->description;
-            //$i="fjalfjlakfjalkfjlkafj\\n \\n hkdhfkdhfkdhjf\\n hsuhfkdjhf";
-            // for($j=0;$j<strlen($i);$j++)
-            //  {
-
-            //         if($i[$j]=='\\' &&  $i[$j+1]=='n')
-            //           {
-            //              $i[$j]=" ";
-            //              $i[$j+1]=" ";
-
-            //           }
-
-
-
-            //  }
-            // $i=str_replace(' ', '-', $i);
-            //$j= str_replace('|', '', $i);
-            // $i= str_replace('-', ' ', $i);
             $j = $j . " ";
             $i = $i . $j;
         }
-        //echo $i;
         $i = str_replace("|", "", $i);
         $i = str_replace("©", "Q", $i);
         $i = trim($i);
         $answers = preg_split("/((q|Q)[0-9]+(:|;))|([0-9]+(:|;))/", $i);
-        //   dd($answers);
 
 
         $paper = \App\Paper::find($id);
         $questions = $paper->questions;
-        //dd($m);
         $k = 0;
         $total = 0;
         $m = "";
-        //dd($questions);
         foreach ($questions as $question) {
             $keywords = $question->keywords;
-            // dd($keywords);
             if ($answers[0] == NULL) $k = $k + 1;
             if ($question->sp == 0) {
                 $ref = spchk($keywords[0]->answer);
                 $stud = spchk($answers[$k]);
             }
-            //dd($stud);
             $refo = listconv($ref, $question);
             $studo = listconv($stud, $question);
-            // dd($studo);
             $refl = llemm($refo);
             $studl = llemm($studo);
             $key = klem($keywords);
             $marks = analyz($refo, $refl, $studo, $studl, $key, $question);
-            //echo "hi";
             $total += $marks;
             $m = $m . ',' . (string)$marks;
             $k++;
         }
-        //echo "$m";
-        //dd(request('roll'));
-        $student = \App\user::where('roll', '=', request('roll'))->first();;
-        //dd($student);
+        $student = \App\user::where('roll', '=', $rollnumber)->first();
         $result = new \App\Result;
         $result->marks = $m;
         $result->finalmarks = $total;
         $result->Sid = $student->id;
         $result->paper_id = $id;
+        $result->paper_code = $paper->code;
         $result->name = $student->name;
         $result->save();
 

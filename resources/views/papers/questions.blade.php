@@ -5,6 +5,11 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-8">
+      @if(sizeof($errors)>0)
+      <div class="alert alert-danger">
+        Please check for any missing field. Everything other than keywords is required
+      </div>
+      @endif
       <div class="card">
 
         <div class="card-header">Paper Information</div>
@@ -28,7 +33,8 @@
             @for ($i = 1; $i <=$paper->numQ; $i++)
               <div class="form-group">
                 <label for="Name">Question-<b style="font-size:18px;">{{$i}}</b></label>
-                <input type="text" class="form-control" name="name{{$i}}" id="name{{$i}}" placeholder="Enter Question here">
+                <input type="text" class="form-control" name="name{{$i}}" id="name{{$i}}"
+                  placeholder="Enter Question here">
                 <br>
                 <div class="form-row">
                   <div class="form-group col-md-4">
@@ -74,7 +80,8 @@
                 <div class="form-group">
 
                   <label for="Answer{{$i}}">Expected Answer</label>
-                  <textarea class="form-control" name="answer{{$i}}" id="answer{{$i}}" placeholder="Enter Expected Answer here"></textarea>
+                  <textarea class="form-control" name="answer{{$i}}" id="answer{{$i}}"
+                    placeholder="Enter Expected Answer here"></textarea>
                   <br>
                   <div class="form-row">
                     <div class="form-group col-md-6">
@@ -143,7 +150,7 @@
       {{-- View/Edit them here: <a href="{{$paper->id}}/edit/"> Questions</a> --}}
       <ul>
         @foreach ($paper->questions as $question)
-          <li>{{$question->name}}</li>
+        <li>{{$question->name}}</li>
         @endforeach
       </ul>
     </div>

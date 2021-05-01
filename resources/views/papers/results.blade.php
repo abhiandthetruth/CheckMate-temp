@@ -9,7 +9,8 @@
         <div class="card-header">Dashboard</div>
         <div class="card-body">
           @if(Auth::user()->type)
-          <button type="button" onClick="window.location='papers/create';" class="btn btn-primary">Add new Paper</button>
+          <button type="button" onClick="window.location='papers/create';" class="btn btn-primary">Add new
+            Paper</button>
           <hr>
           @if(session('msg'))
 
@@ -42,7 +43,7 @@
               <tr>
                 <th scope="row"><?php echo $i ?></th>
                 <td>{{$result->name}}</td>
-                <td>{{$result->created_at->format('d/m/y')}}</td>
+                <td>{{$result->iska->Roll}}</td>
                 <td>{{substr($result->marks,1)}}</td>
                 <td>{{$result->finalmarks}}</td>
               </tr>

@@ -19,8 +19,6 @@ class PapersController extends Controller
 
   public function create()
   {
-
-
     return view('papers.add');
   }
 
@@ -60,21 +58,29 @@ class PapersController extends Controller
   {
     $paper = \App\Paper::find($id);
     $results = $paper->results;
-    //    dd($results);
     return view("papers/results", compact('paper', 'results'));
   }
 
 
-  public function SubmitQuestions($id)
+  public function SubmitQuestions($code)
   {
 
-    $paper = \App\Paper::find($id);
-    $errors = [];
+    $paper = \App\Paper::where('code', $code)->firstOrFail();
+    $validateRules = [];
+    for ($i = 1; $i <= $paper->numQ; $i++) {
+      $validateRules['name' . strval($i)] = 'required';
+      $validateRules['nump' . strval($i)] = 'required';
+      $validateRules['numc' . strval($i)] = 'required';
+      $validateRules['type' . strval($i)] = 'required';
+      $validateRules['typec' . strval($i)] = 'required';
+      $validateRules['marks' . strval($i)] = 'required';
+    }
+    request()->validate($validateRules);
     for ($i = 1; $i <= $paper->numQ; $i++) {
       //Adding Questions
       $question = new \App\question;
       $question->name = request('name' . strval($i));
-      $question->paper_id = $id;
+      $question->paper_id = $paper->id;
       $question->number = $i;
       $question->numP = request('nump' . strval($i));
       $question->numC = request('numc' . strval($i));
@@ -93,59 +99,63 @@ class PapersController extends Controller
       $answer->save();
 
       //Adding Exact Keywords withmarks
-
-      $exact = request('exact' . strval($i));
-      $exactm = request('emarks' . strval($i));
-      $exactarray = explode(",", $exact);
-      $exactmarks = explode(",", $exactm);
-      $j = 0;
-      foreach ($exactarray as $e) {
-        $exact = new \App\keyword;
-        $exact->type = 1;
-        $exact->question_id = $question->id;
-        $exact->mark = $exactmarks[$j];
-        $exact->answer = $e;
-        $exact->save();
-        $j++;
+      if (request()->has('exact') && request()->has('emarks')) {
+        $exact = request('exact' . strval($i));
+        $exactm = request('emarks' . strval($i));
+        $exactarray = explode(",", $exact);
+        $exactmarks = explode(",", $exactm);
+        $j = 0;
+        foreach ($exactarray as $e) {
+          $exact = new \App\keyword;
+          $exact->type = 1;
+          $exact->question_id = $question->id;
+          $exact->mark = $exactmarks[$j];
+          $exact->answer = $e;
+          $exact->save();
+          $j++;
+        }
       }
 
-      $sym = request('syn' . strval($i));
-      $symm = request('smarks' . strval($i));
-      $symarray = explode(",", $sym);
-      $symmarks = explode(",", $symm);
-      $j = 0;
-      foreach ($symarray as $e) {
-        $sym = new \App\keyword;
-        $sym->type = 2;
-        $sym->question_id = $question->id;
-        $sym->mark = $symmarks[$j];
-        $sym->answer = $e;
-        $sym->save();
-        $j++;
+      // Adding similar words
+      if (request()->has('syn') && request()->has('smarks')) {
+        $sym = request('syn' . strval($i));
+        $symm = request('smarks' . strval($i));
+        $symarray = explode(",", $sym);
+        $symmarks = explode(",", $symm);
+        $j = 0;
+        foreach ($symarray as $e) {
+          $sym = new \App\keyword;
+          $sym->type = 2;
+          $sym->question_id = $question->id;
+          $sym->mark = $symmarks[$j];
+          $sym->answer = $e;
+          $sym->save();
+          $j++;
+        }
       }
 
 
-      //Adding Exact Keywords withmarks
+      //Adding res Keywords withmarks
+      if (request()->has('Res') && request()->has('rmarks')) {
+        $res = request('Res' . strval($i));
+        $resm = request('rmarks' . strval($i));
+        $resarray = explode(",", $res);
+        $resmarks = explode(",", $resm);
+        $j = 0;
+        foreach ($resarray as $e) {
 
-      $res = request('Res' . strval($i));
-      $resm = request('rmarks' . strval($i));
-      $resarray = explode(",", $res);
-      $resmarks = explode(",", $resm);
-      $j = 0;
-      foreach ($resarray as $e) {
-
-        $res = new \App\keyword;
-        $res->type = 3;
-        $res->question_id = $question->id;
-        $res->mark = $resmarks[$j];
-        $res->answer = $e;
-        $res->save();
-        $j++;
+          $res = new \App\keyword;
+          $res->type = 3;
+          $res->question_id = $question->id;
+          $res->mark = $resmarks[$j];
+          $res->answer = $e;
+          $res->save();
+          $j++;
+        }
       }
     }
     $paper->status = 1;
     $paper->save();
-    //  dd(request());
     return redirect('/home');
   }
 }

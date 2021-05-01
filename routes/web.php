@@ -43,7 +43,7 @@ Route::post('/papers/create', 'PapersController@add');
 
 //Add a question
 Route::get('/papers/{code}', 'PapersController@addQuestions');
-Route::post('/papers/{id}', 'PapersController@submitQuestions');
+Route::post('/papers/{code}', 'PapersController@submitQuestions');
 
 //Check paper
 Route::post('/papers/{id}/check', 'CheckController@checkmate');

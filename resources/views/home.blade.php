@@ -9,7 +9,8 @@
         <div class="card-header">Dashboard</div>
         <div class="card-body">
           @if(Auth::user()->type)
-          <button type="button" onClick="window.location='papers/create';" class="btn btn-primary">Add new Paper</button>
+          <button type="button" onClick="window.location='papers/create';" class="btn btn-primary">Add new
+            Paper</button>
           <hr>
           @if(session('msg'))
 
@@ -71,14 +72,15 @@
             <h3>Submit Answers:</h3>
           </div>
           <hr>
-              <div class="form-row" style="margin:0px 0px;">
-                <div class="form-group">
-                  <label for="code">Enter Paper Code</label>
-                  <input type="text" name="code" id="code">
-                  <button class="btn btn-primary" onclick="document.location.href = `/papers/${document.getElementById('code').value}`">Go</button>
-                </div>
-              </div>
-            <br>
+          <div class="form-row" style="margin:0px 0px;">
+            <div class="form-group">
+              <label for="code">Enter Paper Code</label>
+              <input type="text" name="code" id="code">
+              <button class="btn btn-primary"
+                onclick="document.location.href = `/papers/${document.getElementById('code').value}`">Go</button>
+            </div>
+          </div>
+          <br>
           <div>
             <h3>Your Results:</h3>
           </div>
@@ -94,7 +96,7 @@
             <thead>
               <tr>
                 <th scope="col">Sr No.</th>
-                <th scope="col">Paper ID</th>
+                <th scope="col">Paper Code</th>
                 <th scope="col">Final Marks </th>
                 <th scope="col">Question Wise Marks</th>
 
@@ -106,9 +108,9 @@
 
               <tr>
                 <th scope="row"><?php echo $i ?></th>
-                <td> {{ $result-> paper_id }}</td>
+                <td> {{ $result-> paper_code }}</td>
                 <td> {{ $result-> finalmarks }}</td>
-                <td> {{ $result-> marks }}</td>
+                <td> {{ substr($result->marks,1) }}</td>
 
 
               </tr>
