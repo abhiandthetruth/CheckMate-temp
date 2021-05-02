@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PapersController extends Controller
 {
@@ -24,7 +25,7 @@ class PapersController extends Controller
 
   public function add()
   {
-    if (\Auth::user()->type < 1) abort(403, 'Unauthorized action.');
+    if (Auth::user()->type < 1) abort(403, 'Unauthorized action.');
     request()->validate([
       'code' => ['required', 'unique:papers', 'max:6'],
       'name' => ['required'],
@@ -39,7 +40,7 @@ class PapersController extends Controller
     $paper->total = request('total');
     $paper->status = 0;
     $paper->code = request('code');
-    $paper->user_id = \Auth::user()->id;
+    $paper->user_id = Auth::user()->id;
     $paper->save();
 
     session()->flash('msg', 'Paper is added successfully.');
@@ -61,6 +62,12 @@ class PapersController extends Controller
     return view("papers/results", compact('paper', 'results'));
   }
 
+  public function showresult($id)
+  {
+    $result = \App\result::findOrFail($id);
+    if (Auth::user()->type == 0 && $result->iska->Roll != Auth::user()->Roll) abort(403);
+    return view("papers/result", compact('result'));
+  }
 
   public function SubmitQuestions($code)
   {

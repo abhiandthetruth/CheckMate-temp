@@ -12,4 +12,12 @@ class result extends Model
     {
         return $this->belongsTo('App\user', 'Sid');
     }
+    public function images()
+    {
+        return $this->hasMany('App\image');
+    }
+    public function paper()
+    {
+        return $this->belongsTo('App\paper', 'paper_id');
+    }
 }

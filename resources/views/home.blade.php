@@ -99,7 +99,7 @@
                 <th scope="col">Paper Code</th>
                 <th scope="col">Final Marks </th>
                 <th scope="col">Question Wise Marks</th>
-
+                <th scope="col"></th>
               </tr>
             </thead>
             <?php $i = 1 ?>
@@ -111,8 +111,7 @@
                 <td> {{ $result-> paper_code }}</td>
                 <td> {{ $result-> finalmarks }}</td>
                 <td> {{ substr($result->marks,1) }}</td>
-
-
+                <td><a href="/result/{{$result->id}}">View Submission</a></td>
               </tr>
               <?php $i++ ?>
               @endforeach

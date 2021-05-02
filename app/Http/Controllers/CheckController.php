@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 global $smscr;
 define("MINEX", 0.60);
 define("MINLEN", 0.40);
@@ -273,10 +275,13 @@ class CheckController extends Controller
     public function checkmate($id, request $request)
     {
         $rollnumber = '';
-        if (\Auth::user()->type) {
+        if (Auth::user()->type) {
             $rollnumber = request('roll');
-        } else $rollnumber = \Auth::user()->Roll;
+        } else $rollnumber = Auth::user()->Roll;
         $i = "";
+        $paper = \App\Paper::find($id);
+        $result = new \App\Result;
+        $imageObjs = array();
         foreach ($request->file('filename') as $file) {
             $image = base64_encode(file_get_contents($file));
             //prepare request
@@ -289,14 +294,18 @@ class CheckController extends Controller
             $j = $response->responses[0]->textAnnotations[0]->description;
             $j = $j . " ";
             $i = $i . $j;
+            //Save to database
+            $imageObj = new \App\image;
+            $imageObj->paper_id = $paper->id;
+            $imageObj->scanned = $image;
+            array_push($imageObjs, $imageObj);
         }
         $i = str_replace("|", "", $i);
         $i = str_replace("©", "Q", $i);
         $i = trim($i);
+        $result->scanned_answer = $i;
         $answers = preg_split("/((q|Q)[0-9]+(:|;))|([0-9]+(:|;))/", $i);
 
-
-        $paper = \App\Paper::find($id);
         $questions = $paper->questions;
         $k = 0;
         $total = 0;
@@ -319,7 +328,6 @@ class CheckController extends Controller
             $k++;
         }
         $student = \App\user::where('roll', '=', $rollnumber)->first();
-        $result = new \App\Result;
         $result->marks = $m;
         $result->finalmarks = $total;
         $result->Sid = $student->id;
@@ -327,7 +335,10 @@ class CheckController extends Controller
         $result->paper_code = $paper->code;
         $result->name = $student->name;
         $result->save();
-
+        foreach ($imageObjs as $imageObj) {
+            $imageObj->result_id = $result->id;
+            $imageObj->save();
+        }
         session()->flash('msg', 'Paper is Checked successfully.');
         return back()->withInput();
     }

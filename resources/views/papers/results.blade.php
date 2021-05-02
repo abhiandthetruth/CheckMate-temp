@@ -34,6 +34,7 @@
                 <th scope="col">Roll No.</th>
                 <th scope="col">Marks per Question</th>
                 <th scope="col">Total Marks</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <?php $i = 1 ?>
@@ -46,6 +47,7 @@
                 <td>{{$result->iska->Roll}}</td>
                 <td>{{substr($result->marks,1)}}</td>
                 <td>{{$result->finalmarks}}</td>
+                <td><a href="/result/{{$result->id}}">View Submission</a></td>
               </tr>
               <?php $i++ ?>
               @endforeach

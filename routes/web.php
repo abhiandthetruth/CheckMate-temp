@@ -11,7 +11,8 @@
 |
 */
 
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 //Home Route
 Route::get('/', function () {
     return view('welcome');
@@ -49,3 +50,6 @@ Route::post('/papers/{code}', 'PapersController@submitQuestions');
 Route::post('/papers/{id}/check', 'CheckController@checkmate');
 
 Route::get('/papers/{id}/result', 'PapersController@viewresult');
+
+// View Result
+Route::get('/result/{id}', 'PapersController@showresult');
