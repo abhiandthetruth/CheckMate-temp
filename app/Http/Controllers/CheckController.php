@@ -68,7 +68,7 @@ function listsort($refo, $studo, $studl)
             }
             $j++;
         }
-        $stdr[$i] = $studo[$j];
+        $stdr[$i] = $studo[$imax];
         $smscr[$i] = $max;
         $i++;
     }
@@ -305,7 +305,7 @@ class CheckController extends Controller
         $i = trim($i);
         $result->scanned_answer = $i;
         $answers = preg_split("/((q|Q)[0-9]+(:|;))|([0-9]+(:|;))/", $i);
-
+        $answers = preg_replace('/\s+/', ' ', $answers);
         $questions = $paper->questions;
         $k = 0;
         $total = 0;
